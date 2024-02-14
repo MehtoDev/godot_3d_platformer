@@ -1,0 +1,96 @@
+[gd_scene load_steps=7 format=3 uid="uid://y13r20c40e31"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_1arnx"]
+[ext_resource type="Script" path="res://Camera3D.gd" id="2_risys"]
+[ext_resource type="Texture2D" uid="uid://citk155sea81e" path="res://Crosshair.png" id="3_8krfw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_voqe1"]
+height = 1.7
+radius = 0.4
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_upfur"]
+length = 2.0
+slide_on_slope = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4kcdw"]
+size = Vector3(0.600444, 1.11621, 0.590801)
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 17
+collision_mask = 17
+script = ExtResource("1_1arnx")
+camera = NodePath("Camera")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_voqe1")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Collider"]
+height = 1.7
+
+[node name="Camera" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.507485, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+shape = SubResource("SeparationRayShape3D_upfur")
+spring_length = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="Camera/SpringArm3D"]
+script = ExtResource("2_risys")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera/SpringArm3D/Camera3D"]
+target_position = Vector3(0, 0, -15)
+collision_mask = 15
+
+[node name="TextureRect" type="TextureRect" parent="Camera/SpringArm3D/Camera3D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = -19.0
+offset_right = 19.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_8krfw")
+
+[node name="Head" type="Node3D" parent="."]
+
+[node name="ChestRay" type="Area3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head/ChestRay"]
+transform = Transform3D(1, 0, 0, 0, 0.999997, 0, 0, 0, 0.999997, 0, -0.446613, -0.444388)
+shape = SubResource("BoxShape3D_4kcdw")
+
+[node name="HeadRays" type="Node3D" parent="Head"]
+
+[node name="Center" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="Left" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.7, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="Right" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.7, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="CenterUp" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, -0.766044, 0, 0.766044, 0.642788, 0, 0.7, -9.04621e-08)
+target_position = Vector3(0, 0, -2)
+
+[node name="LeftUp" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, -0.766044, 0, 0.766044, 0.642788, -0.4, 0.7, -9.04621e-08)
+target_position = Vector3(0, 0, -2)
+
+[node name="RightUp" type="RayCast3D" parent="Head/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, -0.766044, 0, 0.766044, 0.642788, 0.4, 0.7, -9.04621e-08)
+target_position = Vector3(0, 0, -2)

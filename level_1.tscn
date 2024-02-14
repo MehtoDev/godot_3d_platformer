@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8wm2goc04iv4"]
+
+[ext_resource type="PackedScene" uid="uid://c1fntfo6kamrk" path="res://BaseLevel.tscn" id="1_vv0cc"]
+[ext_resource type="PackedScene" uid="uid://y13r20c40e31" path="res://player.tscn" id="2_785ig"]
+[ext_resource type="Script" path="res://config.gd" id="3_s6bes"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_ijgta"]
+
+[sub_resource type="Sky" id="Sky_sy7qh"]
+sky_material = SubResource("PhysicalSkyMaterial_ijgta")
+radiance_size = 5
+
+[sub_resource type="Environment" id="Environment_c5jh8"]
+background_mode = 2
+sky = SubResource("Sky_sy7qh")
+ambient_light_source = 3
+reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+fog_light_energy = 0.0
+
+[node name="Level_1" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c5jh8")
+
+[node name="BaseLevel" parent="." instance=ExtResource("1_vv0cc")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.725434, -0.67761, 0.12079, -0.429864, -0.308971, 0.848383, -0.537552, -0.667369, -0.515418, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." node_paths=PackedStringArray("Config") instance=ExtResource("2_785ig")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89936, 1.81397, 24.4156)
+Config = NodePath("../Config")
+
+[node name="Config" type="Node" parent="."]
+script = ExtResource("3_s6bes")
+max_velocity_ground = 2.5
